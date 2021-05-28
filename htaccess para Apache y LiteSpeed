@@ -1,0 +1,198 @@
+# BEGIN HTTPS via Proxy
+SetEnvIf X-Forwarded-Proto https HTTPS=on
+# END HTTPS via Proxy
+
+# BEGIN ModPagespeed
+<IfModule pagespeed_module>
+  ModPagespeed off
+</IfModule>
+# END ModPagespeed
+
+# START - [Seguridad] Bloqueado el acceso a ficheros ".ht"
+<FilesMatch "^\.ht">
+  Deny from all
+</FilesMatch>
+<FilesMatch "^\.ftp">
+  Deny from all
+</FilesMatch>
+<FilesMatch "^php.ini$">
+  Deny from all
+</FilesMatch>
+<FilesMatch "^\.well-known">
+  Allow from all
+</FilesMatch>
+# END
+
+# BEGIN cors
+<FilesMatch "\.(?:ttf|eot|woff|otf)$">
+  Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+#END
+
+# BEGIN Directory browsing
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>
+# END Directory browsing
+
+DirectoryIndex index.php index.html /index.php
+Options None
+Options FollowSymLinks
+ServerSignature Off
+
+
+# START Expresión regular de WordPress
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # [Seguridad] Configuracion del dominio canonico
+  RewriteCond %{HTTP_HOST} ^www.martinmaiolo.es [NC]
+  RewriteRule ^(.*)$ https://martinmaiolo.es/$1 [L,R=301]
+
+  # [Seguridad] Bloqueamos la peticiones TRACE y TRACK
+  RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+  RewriteRule .* - [F]
+
+  # [Seguridad] Ficheros estáticos generales
+  RewriteRule readme\.(html|txt) - [L,R=404]
+  RewriteRule (licencia|license|LICENSE|olvasdel|lisenssi|liesmich)\.(html|txt) - [L,R=404]
+
+  # [Seguridad] Ficheros propios de WordPress
+  RewriteRule ^wp-config - [L,R=404]
+  RewriteRule ^wp-cron\.php - [L,R=404]
+  RewriteRule ^wp-admin/(install|setup-config|upgrade)\.php - [L,R=404]
+  RewriteRule ^wp-admin/maint/repair\.php - [L,R=404]
+  RewriteRule ^wp-links-opml\.php$ - [L,R=404]
+
+  # [Seguridad] Bloqueo del listing de usuarios
+  RewriteCond %{QUERY_STRING} ^author= [NC]
+  RewriteRule .* - [F,L]
+  RewriteRule ^author/ - [F,L]
+
+  # [Seguridad] Bloqueo de listados de carpetas
+  RewriteRule ^wp-content/mu-plugins/$ - [L,R=404]
+  RewriteRule ^wp-content/(plugins|themes)/(.+)/$ - [L,R=404]
+
+  # [Seguridad] Bloqueo de ficheros inseguros
+  RewriteRule ^wp-content/(?:uploads|files)/.+\.(html|js|php|shtml|swf)$ - [L,R=403]
+  RewriteRule ^wp-content/plugins/.+\.(aac|avi|bz2|cur|docx?|eot|exe|flv|gz|heic|htc|m4a|midi?|mov|mp3|mp4|mpe?g|ogg|ogv|otf|pdf|pptx?|rar|rtf|tar|tgz|tiff?|ttc|wav|wmv|xlsx?|zip) - [L,R=404]
+
+  # [Seguridad] Otros bloqueos
+  RewriteRule ^sftp-config.json - [L,R=404]
+  RewriteRule (access|error)_log - [L,R=404]
+  RewriteRule installer-log\.txt - [L,R=404]
+  RewriteRule wp-content/debug\.log - [L,R=404]
+  RewriteRule (^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$ - [L,R=404]
+
+</IfModule>
+# END
+
+# START - [Seguridad] Mitigation CVE-2018-6389
+<FilesMatch "load-(scripts|styles)\.php">
+  Deny from all
+</FilesMatch>
+# END
+
+# START - [Seguridad] XML-RPC
+<FilesMatch "xmlrpc\.php">
+	Deny from all
+</FilesMatch>
+# END
+
+# START - [Seguridad] No ejecutar ficheros en Uploads
+<FilesMatch "wp-content/uploads/(.+)\.php">
+  Deny from all
+</FilesMatch>
+# END
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+# BEGIN Security Headers
+<IfModule mod_headers.c>
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Content-Security-Policy: upgrade-insecure-requests;
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header unset Pragma
+  Header always unset WP-Super-Cache
+  Header always unset X-Pingback
+</IfModule>
+# END Strict-Transport-Security
+
+# BEGIN EXPIRES
+<IfModule mod_expires.c>
+  ExpiresActive on
+  #Varios
+  ExpiresByType application/pdf A2592000
+  ExpiresByType image/x-icon A2592000
+  ExpiresByType image/vnd.microsoft.icon A2592000
+  ExpiresByType image/svg+xml A2592000
+  #Imagenes
+  ExpiresByType image/jpg A2592000
+  ExpiresByType image/jpeg A2592000
+  ExpiresByType image/png A2592000
+  ExpiresByType image/gif A2592000
+  ExpiresByType image/webp A2592000
+  #Media
+  ExpiresByType video/ogg A2592000
+  ExpiresByType audio/ogg A2592000
+  ExpiresByType video/mp4 A2592000
+  ExpiresByType video/webm A2592000
+  #CSS/JS
+  ExpiresByType text/css A2592000
+  ExpiresByType text/javascript A2592000
+  ExpiresByType application/javascript A2592000
+  ExpiresByType application/x-javascript A2592000
+  #Fuentes
+  ExpiresByType application/x-font-ttf A2592000
+  ExpiresByType application/x-font-woff A2592000
+  ExpiresByType application/font-woff A2592000
+  ExpiresByType application/font-woff2 A2592000
+  ExpiresByType application/vnd.ms-fontobject A2592000
+  ExpiresByType font/ttf A2592000
+  ExpiresByType font/woff A2592000
+  ExpiresByType font/woff2 A2592000
+</IfModule>
+# END EXPIRES
+
+# BEGIN HttpHeadersCompression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/ld+json
+  AddOutputFilterByType DEFLATE application/manifest+json
+  AddOutputFilterByType DEFLATE application/rdf+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/schema+json
+  AddOutputFilterByType DEFLATE application/vnd.geo+json
+  AddOutputFilterByType DEFLATE application/x-web-app-manifest+json
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE font/eot
+  AddOutputFilterByType DEFLATE image/bmp
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE image/vnd.microsoft.icon
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/x-component
+  AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+# END HttpHeadersCompression
