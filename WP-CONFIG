@@ -1,0 +1,28 @@
+define( 'WP_DEBUG', false );
+define('FS_METHOD','direct');
+define('FS_CHMOD_DIR', (0775 & ~ umask()));
+define('FS_CHMOD_FILE', (0664 & ~ umask()));
+
+/* WordPress Cache */
+define( 'WP_CACHE', true );
+define( 'ENABLE_CACHE', true );
+
+/* Compression */
+define( 'COMPRESS_CSS',        true );
+define( 'COMPRESS_SCRIPTS',    true );
+define( 'CONCATENATE_SCRIPTS', true );
+define( 'ENFORCE_GZIP',        true );
+
+/* AutoSave Interval. */
+define( 'AUTOSAVE_INTERVAL', '30' );
+/* Disable Post Revisions. */
+define( 'WP_POST_REVISIONS', false );
+/* Media Trash. */
+define( 'MEDIA_TRASH', false );
+
+/* SSL */
+define( 'FORCE_SSL_LOGIN', true );
+define( 'FORCE_SSL_ADMIN', true );
+
+/* Sobrescribir imágenes */
+define( 'IMAGE_EDIT_OVERWRITE', true );
