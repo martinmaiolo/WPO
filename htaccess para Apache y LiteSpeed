@@ -196,3 +196,8 @@ RewriteRule . /index.php [L]
   AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 # END HttpHeadersCompression
+
+# Gestionar errores 404 de estaticos desde Apache
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule \.(jpg|jpeg|png|gif|webp|avif|svg|xls|doc|pdf|ico|eot|ttf|woff|woff2|otf|css|html|js)$ - [NC,R=404,L]
