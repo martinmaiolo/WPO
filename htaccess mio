@@ -1,0 +1,157 @@
+# Servir contenidos de tipo text/plain o text/html usando la codificación UTF-8
+AddDefaultCharset utf-8
+
+# Forzar la codificación UTF-8 en varios tipos de archivos
+<IfModule mod_mime.c>
+AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
+</IfModule>
+
+# BEGIN: Enable HSTS for HTTPS connections
+<if "%{HTTPS} == 'on'">
+Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+</if>
+# END: Enable HSTS for HTTPS connections
+
+## Since you have enabled HSTS the first redirection rule will
+## instruct the browser to visit the HTTPS version of your site. 
+## This prevents unsafe redirections through HTTP.
+
+# Turn on Rewrite Engine
+RewriteEngine On
+
+# Redirect to secure HTTPS before changing host
+RewriteCond %{HTTP_HOST} !^www\.(.*)$ [NC]
+RewriteCond %{https} off [OR] 
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
+RewriteCond %{HTTP:X-Forwarded-SSL} !https
+RewriteRule ^(.*)$ https://example.com/$1 [R=301,L]
+
+# Remove trailing slash from non-filepath urls
+RewriteCond %{REQUEST_URI} /(.+)/$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ https://www.example.com/%1 [R=301,L]
+
+# Include trailing slash on directory 
+RewriteCond %{REQUEST_URI} !(.+)/$
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+)$ https://www.example.com/$1/ [R=301,L]
+
+# Force HTTPS and non-www 
+RewriteCond %{HTTP_HOST} !^www\.(.*)$ [OR,NC]
+RewriteCond %{https} off [OR] 
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
+RewriteCond %{HTTP:X-Forwarded-SSL} !https
+RewriteRule ^(.*)$ https://example.com/$1 [R=301,L]
+
+# Webfont access
+<IfModule mod_headers.c>
+<FilesMatch "\.(ttf|ttc|otf|eot|woff|font.css)$">
+Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+</IfModule>
+
+# Proper MIME type for all files
+# JavaScript
+# Normalize to standard type (it's sniffed in IE anyways)
+# tools.ietf.org/html/rfc4329#section-7.2
+AddType application/javascript         js jsonp
+AddType application/json               json
+
+# Audio
+AddType audio/ogg                      oga ogg
+AddType audio/mp4                      m4a f4a f4b
+
+# Video
+AddType video/ogg                      ogv
+AddType video/mp4                      mp4 m4v f4v f4p
+AddType video/webm                     webm
+AddType video/x-flv                    flv
+
+# SVG
+#   Required for svg webfonts on iPad
+#   twitter.com/FontSquirrel/status/14855840545
+AddType     image/svg+xml              svg svgz
+AddEncoding gzip                       svgz
+
+# Webfonts
+AddType application/vnd.ms-fontobject  eot
+AddType application/x-font-ttf         ttf ttc
+AddType font/opentype                  otf
+AddType application/x-font-woff        woff
+
+# Assorted types
+AddType image/x-icon                        ico
+AddType image/webp                          webp
+AddType text/cache-manifest                 appcache manifest
+AddType text/x-component                    htc
+AddType application/xml                     rss atom xml rdf
+AddType application/x-chrome-extension      crx
+AddType application/x-opera-extension       oex
+AddType application/x-xpinstall             xpi
+AddType application/octet-stream            safariextz
+AddType application/x-web-app-manifest+json webapp
+AddType text/x-vcard                        vcf
+AddType application/x-shockwave-flash       swf
+AddType text/vtt                            vtt
+
+# BEGIN Directory browsing
+<IfModule mod_autoindex.c>
+Options -Indexes
+</IfModule>
+# END Directory browsing
+
+# Deny access to wp-config.php file
+<files wp-config.php>
+order allow,deny
+deny from all
+</files>
+
+# Deny access to all .htaccess files
+<files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</files>
+
+# Block wp-includes folder and files
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^wp-admin/includes/ - [F,L]
+RewriteRule !^wp-includes/ - [S=3]
+RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
+RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
+RewriteRule ^wp-includes/theme-compat/ - [F,L]
+</IfModule>
+
+# Block WordPress xmlrpc.php requests
+<Files xmlrpc.php>
+order deny,allow
+deny from all
+</Files>
+
+# BEGIN block author scans
+RewriteEngine On
+RewriteBase /
+RewriteCond %{QUERY_STRING} (author=\d+) [NC]
+RewriteRule .* - [F]
+# END block author scans 
+
+# Prevent image hotlinking script. Replace last URL with any image link you want.
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourwebsite.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourotherwebsite.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ http://i.imgur.com/MlQAH71.jpg [NC,R,L]
+
+# Evita el SPAM en comentarios
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_URI} .wp-comments-post.php*
+RewriteCond %{HTTP_REFERER} !.*dominio.com.* [OR]
+RewriteCond %{HTTP_USER_AGENT} ^$
+RewriteRule (.*) ^https://%{REMOTE_ADDR}/$ [R=301,L]
+
+# START – TN Disable server signature #
+ServerSignature Off
+# END – TN Disable server signature #
