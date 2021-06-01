@@ -155,3 +155,17 @@ RewriteRule (.*) ^https://%{REMOTE_ADDR}/$ [R=301,L]
 # START – TN Disable server signature #
 ServerSignature Off
 # END – TN Disable server signature #
+
+# canonical robots.txt
+<IfModule mod_rewrite.c>
+RewriteBase /
+RewriteCond %{REQUEST_URI} !^/robots.txt$ [NC]
+RewriteCond %{REQUEST_URI} robots.txt [NC]
+RewriteRule .* http://your-site.com/robots.txt [R=301,L]
+</IfModule>
+
+# canonical sitemaps
+<IfModule mod_alias.c>
+RedirectMatch 301 /sitemap\.xml$ http://example.com/sitemap.xml
+RedirectMatch 301 /sitemap\.xml\.gz$ http://example.com/sitemap.xml.gz
+</IfModule>
