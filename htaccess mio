@@ -161,11 +161,24 @@ ServerSignature Off
 RewriteBase /
 RewriteCond %{REQUEST_URI} !^/robots.txt$ [NC]
 RewriteCond %{REQUEST_URI} robots.txt [NC]
-RewriteRule .* http://your-site.com/robots.txt [R=301,L]
+RewriteRule .* https://elementsbcn.com/robots.txt [R=301,L]
 </IfModule>
 
 # canonical sitemaps
 <IfModule mod_alias.c>
-RedirectMatch 301 /sitemap\.xml$ http://example.com/sitemap.xml
-RedirectMatch 301 /sitemap\.xml\.gz$ http://example.com/sitemap.xml.gz
+RedirectMatch 301 /sitemap\.xml$ https://elementsbcn.com/page-sitemap.xml
+</IfModule>
+
+# Gestionar errores 404 de estaticos desde Apache
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule \.(jpg|jpeg|png|gif|webp|avif|svg|xls|doc|pdf|ico|eot|ttf|woff|woff2|otf|css|html|js)$ - [NC,R=404,L]
+
+# Canonizar IP
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^[B]elementsbcn\.com[/B]$ [NC]
+RewriteRule ^(.*)$ http://[B]www.elementsbcn.com[/B]/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^[B]185\.92\.244\.55[/B]
+RewriteRule ^(.*)$ http://[B]www.elementsbcn.com[/B]/$1 [R=301,L]
 </IfModule>
