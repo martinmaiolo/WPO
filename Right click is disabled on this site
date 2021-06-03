@@ -1,21 +1,15 @@
-<html>
-<head>
-<script 
-src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></s
-cript>
+/*Disable right click */
+function disable_right_click() {
+   ?>
 <script>
 jQuery(document).ready(function(){
-  jQuery(function() {
-        jQuery(this).bind("contextmenu", function(event) {
-            event.preventDefault();
-            alert('Right click is disabled on this site!!')
-        });
+    jQuery(document).bind("contextmenu",function(e){
+        return false;
     });
 });
 </script>
+<?php
+}
+add_action('wp_footer', 'disable_right_click');
 
-</head>
-<body>
-Here is my code. Right click on me.
-</body>
-</html>
+/*code ends */
