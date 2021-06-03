@@ -1,0 +1,37 @@
+/*preload tff fonts*/
+
+function enqueue_scripts_ttf() {
+  wp_enqueue_style('ttf-handle', '/yourlink/filename.ttf', array(), null);
+}
+add_action('wp_enqueue_scripts', 'enqueue_scripts_ttf');
+
+
+function style_loader_ttf($html, $handle) {
+  if($handle === 'ttf-handle') {
+return str_replace("rel='stylesheet'", "rel='preload' as='font' type='font/ttf' crossorigin='anonymous'", $html);
+  }
+  return $html;
+}
+add_filter('style_loader_tag', 'style_loader_ttf', 10, 2);
+
+/*code ends */
+
+----------------------------------
+
+/*preload woff */
+
+function enqueue_scripts_woff() {
+  wp_enqueue_style('woff-handle', '/yourlink/filename.woff2', array(), null);
+}
+add_action('wp_enqueue_scripts', 'enqueue_scripts_woff');
+
+
+function style_loader_woff($html, $handle) {
+  if($handle === 'woff-handle') {
+return str_replace("rel='stylesheet'", "rel='preload' as='font' type='font/woff2' crossorigin='anonymous'", $html);
+  }
+  return $html;
+}
+add_filter('style_loader_tag', 'style_loader_woff', 10, 2);
+
+/*code ends */
