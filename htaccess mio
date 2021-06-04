@@ -43,6 +43,13 @@ RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
 RewriteCond %{HTTP:X-Forwarded-SSL} !https
 RewriteRule ^(.*)$ https://example.com/$1 [R=301,L]
 
+# Canonical HTTPS/non-WWW - replace example.com with your own domain
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTPS} off [OR]
+	RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+	RewriteRule (.*) https://example.com/$1 [L,R=301]
+</IfModule>
+
 # Webfont access
 <IfModule mod_headers.c>
 <FilesMatch "\.(ttf|ttc|otf|eot|woff|font.css)$">
@@ -182,3 +189,18 @@ RewriteRule ^(.*)$ http://[B]www.elementsbcn.com[/B]/$1 [R=301,L]
 RewriteCond %{HTTP_HOST} ^[B]185\.92\.244\.55[/B]
 RewriteRule ^(.*)$ http://[B]www.elementsbcn.com[/B]/$1 [R=301,L]
 </IfModule>
+
+#  Desactiva el TRACE de HTTP y TRACK
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+
+# Evita el SPAM en comentarios
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_URI} .wp-comments-post.php*
+RewriteCond %{HTTP_REFERER} !.*dominio.com.* [OR]
+RewriteCond %{HTTP_USER_AGENT} ^$
+RewriteRule (.*) ^https://%{REMOTE_ADDR}/$ [R=301,L]
+  
+ 
