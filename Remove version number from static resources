@@ -1,0 +1,12 @@
+function remove_ver_static_resources() {
+   if(!is_admin()) {
+       add_filter('script_loader_src', remove_query_strings, 15);
+       add_filter('style_loader_src', remove_query_strings, 15);
+   }
+}
+
+function remove_query_strings($src){
+   $output = preg_split("/(&ver|\?ver)/", $src);
+   return $output[0];
+}
+add_action('init', remove_ver_static_resources);
