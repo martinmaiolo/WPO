@@ -58,3 +58,19 @@ add_filter('wpacu_preload_local_font_files_output', function ($preload_tag_outpu
 });
 
 
+_____________________________
+
+
+
+
+
+function conditional_mobile_styles_scripts() {
+  // First check that wp_is_mobile didn't disappear for some reason
+  if ( function_exists( 'is_plugin_active' ) ) {
+    //dequeue scripts and styles if it's for a mobile device. 
+    if (is_plugin_active( 'elementor/elementor.php' )) {
+      wp_dequeue_style( 'elementor-animations' );
+    }
+  }
+}
+add_action( 'wp_enqueue_scripts', 'conditional_mobile_styles_scripts', 99 );
