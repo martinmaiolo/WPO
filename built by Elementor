@@ -7,3 +7,54 @@ $elementor_page = get_post_meta( $post_id, '_elementor_edit_mode', true );
 if ( ! ! $elementor_page ) {
     //page is build with elementor
 }
+
+_____________________________
+
+
+// Remove styles of plugin
+add_filter( 'jetpack_implode_frontend_css', '__return_false' );
+add_filter( 'bbp_default_styles', '__return_empty_array' );
+
+// Remove bbPress scripts on non-bbPress pages
+add_filter( 'bbp_default_scripts', function ( $scripts )
+{
+	return is_bbpress() ? $scripts : [ ];
+} );
+
+// Jetpack scripts
+add_action( 'wp_enqueue_scripts', function ()
+{
+	wp_dequeue_script( 'devicepx' );
+}, 20 );
+
+
+_____________________________
+
+
+function remove_animation() {
+    if ( is_page( [ 19 ] ) ):
+        wp_deregister_style( 'elementor-animations' );
+        wp_dequeue_style( 'elementor-animations' );
+    endif;
+}
+
+add_action( 'wp_enqueue_scripts', 'remove_animation', 100 );
+
+_____________________________
+
+
+add_filter('wpacu_preload_local_font_files_output', function ($preload_tag_output) {
+    global $post;
+
+    // You can do extra checkings here (e.g. to make sure Elementor is activated to avoid any PHP errros if the class is not found, etc.)
+    $is_elementor_page = \Elementor\Plugin::$instance->db->is_built_with_elementor($post->ID);
+
+    if ($is_elementor_page) {
+        return $preload_tag_output;
+    }
+
+    // Not an Elementor page, return an empty value (nothing to print)
+    return '';
+});
+
+
