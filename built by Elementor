@@ -1,0 +1,9 @@
+if ( Elementor\Plugin::instance()->db->is_built_with_elementor( $post_id ) ) {
+    //page is build with elementor
+}
+
+// or by checking directly
+$elementor_page = get_post_meta( $post_id, '_elementor_edit_mode', true );
+if ( ! ! $elementor_page ) {
+    //page is build with elementor
+}
