@@ -1,0 +1,3 @@
+<!-- moved to header.php
+<link rel="preload" href="https://www.wpspeedfix.com/wp-content/uploads/2020/10/method-draw-image.svg" as="image">
+ -->
