@@ -1,0 +1,38 @@
+{
+    "name": "App de revelados de Studio Victor",
+    "short_name": "Studio Victor App",
+    "description": "",
+    "icons": [
+        {
+            "src": "https:\/\/app.studiovictor.com\/wp-content\/uploads\/2021\/04\/icon-192.png",
+            "sizes": "192x192",
+            "type": "image\/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https:\/\/app.studiovictor.com\/wp-content\/uploads\/2021\/04\/icon-192.png",
+            "sizes": "192x192",
+            "type": "image\/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "https:\/\/app.studiovictor.com\/wp-content\/uploads\/2020\/11\/cropped-logoSV512-N.jpg",
+            "sizes": "512x512",
+            "type": "image\/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https:\/\/app.studiovictor.com\/wp-content\/uploads\/2020\/11\/cropped-logoSV512-N.jpg",
+            "sizes": "512x512",
+            "type": "image\/png",
+            "purpose": "maskable"
+        }
+    ],
+    "background_color": "rgb(0,0,0)",
+    "theme_color": "rgb(0,0,0)",
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": "https:\/\/app.studiovictor.com\/",
+    "scope": "https:\/\/app.studiovictor.com\/",
+    "gcm_sender_id": "482941778795"
+}
