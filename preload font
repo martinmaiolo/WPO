@@ -1,3 +1,5 @@
 	<link rel="preload" as="font" href="https://alvarofontela.com/wp-content/plugins/elementor/assets/lib/font-awesome/webfonts/fa-brands-400.woff2" crossorigin>
 	<link rel="preload" as="font" href="https://alvarofontela.com/wp-content/plugins/elementor/assets/lib/font-awesome/webfonts/fa-solid-900.woff2" crossorigin>
 	<link rel="preload" as="font" href="https://alvarofontela.com/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff2?5.10.0" crossorigin>
+
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdn.alvarofontela.com/wp-includes/js/jquery/jquery.min.js" id="jquery-core-js"></script>
