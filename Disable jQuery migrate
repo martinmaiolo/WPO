@@ -1,0 +1,6 @@
+function deregister_migrate() { 
+ if ( !is_admin() ) {
+ wp_deregister_script('jquery');
+ }
+} 
+add_action('wp_enqueue_scripts', 'deregister_migrate');
