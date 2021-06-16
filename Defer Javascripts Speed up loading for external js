@@ -1,0 +1,11 @@
+// Defer Javascripts Speed up loading for external js files wait till page loads
+// Defer jQuery Parsing using the HTML5 defer property
+if (!(is_admin() )) {
+  function defer_parsing_of_js ( $url ) {
+    if ( FALSE === strpos( $url, '.js' ) ) return $url;
+    if ( strpos( $url, 'jquery.js' ) || strpos( $url, 'jquery.c.js' ) || strpos( $url, 'wpfront-notification-bar.js' ) ) return $url;
+    // return "$url' defer ";
+    return "$url' defer onload='";
+}
+  add_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
+}
