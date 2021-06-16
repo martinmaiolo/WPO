@@ -1,0 +1,48 @@
+<link rel="preconnect" href="https://dulcesdiabeticos.com">
+<link rel="prerender" href="https://dulcesdiabeticos.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Baloo+2%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800&display=swap" onload='this.onload=null,this.rel="stylesheet"'>
+<link href="https://cdn.dulcesdiabeticos.com" rel="preconnect" crossorigin>
+
+
+
+<?php if(is_page('etro-home-interiors')) { ?>
+    <img src="<?php bloginfo('carattere.org/wp-content/uploads/2020/12/33.png');?>/…" alt="Logo">
+<?php } elseif(is_page('gianfranco-ferre')) { ?>
+    <img src="<?php bloginfo('carattere.org/wp-content/uploads/2020/12/03-1.png');?>/…" alt="Logo2">
+<?php } ?>
+
+
+
+
+<?php if ( is_singular() ): ?>
+<h2>Popular posts</h2>
+    <ul>
+        <li><a href="https://wpshout.com/courses/wordpress-development/">Course: Learn WordPress Development</a></li>
+        <li><a href="https://wpshout.com/complete-guide-wordpress-security/">Complete Guide to WordPress Security</a></li>
+        <li><a href="https://wpshout.com/wordpress-page-builder-review/">WordPress Page Builders, Reviewed</a></li>
+    </ul>
+<?php endif; ?>
+
+
+	/usr/local/cpanel/3rdparty/bin/php /usr/local/cpanel/whostmgr/docroot/cgi/softaculous/cli.php --backup --auto=1 --insid=26_31656
+
+/usr/local/cpanel/3rdparty/bin/php "/usr/local/cpanel/whostmgr/docroot/cgi/softaculous"/cli.php --backup --auto=1 --insid=26_60677
+
+	/usr/local/cpanel/3rdparty/bin/php "/usr/local/cpanel/whostmgr/docroot/cgi/softaculous"/cli.php --backup --auto=1 --insid=26_18114
+
+/usr/local/cpanel/3rdparty/bin/php "/usr/local/cpanel/whostmgr/docroot/cgi/softaculous"/cli.php --backup --auto=1 --insid=26_66449
+
+
+
+
+
+
+
+
+
+
+<?php if(is_home() && is_front_page() || is_front_page() && wp_is_mobile() ) { ?>
+    <link rel="preload" as="image" href="/wp-content/uploads/elements-armaris-barcelona.webp" type="image/webp" media="(max-width: 360px)">
+<?php } else{ ?>
+    <link rel="preload" as="image" href="/wp-content/uploads/diputacion4.webp" type="image/webp" media="(max-width: 600px)">
+<?php } ?>
