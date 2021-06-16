@@ -26,3 +26,32 @@ define( 'FORCE_SSL_ADMIN', true );
 
 /* Sobrescribir imágenes */
 define( 'IMAGE_EDIT_OVERWRITE', true );
+
+define( 'WP_DEBUG', false );
+define('FS_METHOD','direct');
+define('FS_CHMOD_DIR', (0775 & ~ umask()));
+define('FS_CHMOD_FILE', (0664 & ~ umask()));
+
+/* WordPress Cache */
+define( 'WP_CACHE', true );
+define( 'ENABLE_CACHE', true );
+
+/* Compression */
+define( 'COMPRESS_CSS',        true );
+define( 'COMPRESS_SCRIPTS',    true );
+define( 'CONCATENATE_SCRIPTS', true );
+define( 'ENFORCE_GZIP',        true );
+
+/* SSL */
+define( 'FORCE_SSL_LOGIN', true );
+define( 'FORCE_SSL_ADMIN', true );
+
+/* Sobrescribir imágenes */
+define( 'IMAGE_EDIT_OVERWRITE', true );
+
+/* Menos petición */
+define( 'WP_HOME', 'https://dulcesdiabeticos.com/' );
+define( 'WP_SITEURL', 'https://dulcesdiabeticos.com/' );
+
+/* CRON */
+define( 'DISABLE_WP_CRON', 'true' );
