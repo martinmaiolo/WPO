@@ -1,0 +1,26 @@
+add_action( 'wp_print_styles', 'remove_styles' );
+add_action( 'wp_print_scripts', 'remove_scripts' );
+
+// Remove styles from plugins we don't need
+function remove_styles() {
+    if ( $GLOBALS['pagenow'] != 'wp-login.php' && ! is_user_logged_in() ) {
+        wp_dequeue_style( 'coblocks-frontend' );
+        wp_dequeue_style( 'coblocks-frontend-css' );
+        wp_dequeue_style( 'wp-editor-font' );
+        wp_dequeue_style( 'duplicate-post' );
+        wp_dequeue_style( 'thickbox' );
+    }
+}
+
+// Remove scripts from plugins we don't use and don't need
+function remove_scripts() {
+
+    // just in case we use those in wp-admin, exclude only from front-end loading
+    if ( ! is_user_logged_in() ) {
+        wp_dequeue_script( 'coblocks-animation' );
+        wp_deregister_script( 'coblocks-animation' );
+        wp_dequeue_script( 'thickbox' );
+        wp_deregister_script( 'thickbox' );
+        wp_deregister_script('jquery');
+    }
+}
