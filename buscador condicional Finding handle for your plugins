@@ -1,0 +1,25 @@
+# Finding handle for your plugins 
+function display_script_handles() {
+    global $wp_scripts;
+	if(current_user_can('manage_options') && ! is_admin()){ # Only load when user is admin
+	foreach( $wp_scripts->queue as $handle ) :
+         $obj = $wp_scripts->registered [$handle];
+         echo $filename = $obj->src;
+		 echo ' : <b>Handle for this script is:</b> <span style="color:green"> '.$handle.'</span><br/><br/>';
+	endforeach;
+	}	
+}
+add_action( 'wp_print_scripts', 'display_script_handles' );
+
+
+# Restrict scripts and styles !is_home
+function conditionally_load_plugin_js(){
+if(! is_home() ) { # Only load CSS and JS on Pages but not on Posts		
+	wp_dequeue_script('ktz-rating-js'); # Restrict scripts.	
+	//wp_dequeue_script('ktz-main-js'); # Restrict scripts.	
+	wp_dequeue_script(' wp-embed'); # Restrict scripts.	
+	//wp_dequeue_script('modernizr-respon'); # Restrict scripts.	
+	}
+}	
+add_action( 'wp_enqueue_scripts', 'conditionally_load_plugin_js' ); 
+
