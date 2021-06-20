@@ -1,3 +1,12 @@
+https://webtrainingwheels.com/how-to-preload-key-requests-in-wordpress/
+
+<link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="image.jpg">
+<link rel="preload" as="script" href="javascript-file.js">
+<link rel="preload" as="style" href="style.css">
+
+
+
 <link rel="preconnect" href="https://dulcesdiabeticos.com">
 <link rel="prerender" href="https://dulcesdiabeticos.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Baloo+2%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800&display=swap" onload='this.onload=null,this.rel="stylesheet"'>
