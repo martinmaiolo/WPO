@@ -1,0 +1,19 @@
+if(is_front_page()) {
+
+        // Dequeue and deregister elementor-pro-frontend
+        wp_deregister_script( 'elementor-pro-frontend' );
+
+        // Re-register elementor-frontend without the elementor-sticky dependency.
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+        wp_register_script(
+                'elementor-pro-frontend',
+                ELEMENTOR_PRO_URL . 'assets/js/frontend' . $suffix . '.js',
+                [
+                    'elementor-frontend-modules',
+                ],
+                ELEMENTOR_VERSION,
+                true
+            );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'elementor_pro_frontend_scripts', 20 );
