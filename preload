@@ -5,7 +5,8 @@ https://webtrainingwheels.com/how-to-preload-key-requests-in-wordpress/
 <link rel="preload" as="script" href="javascript-file.js">
 <link rel="preload" as="style" href="style.css">
 
-
+<link rel='preconnect' href='https://digident.com.ar' >
+<link rel='dns-prefetch' href='//digident.com.ar'>
 
 <link rel="preconnect" href="https://dulcesdiabeticos.com">
 <link rel="prerender" href="https://dulcesdiabeticos.com">
